@@ -1,5 +1,5 @@
-mod utils;
 mod app;
+mod utils;
 
 use wasm_bindgen::prelude::*;
 
@@ -10,12 +10,16 @@ use wasm_bindgen::prelude::*;
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
 #[wasm_bindgen]
-extern {
+extern "C" {
     fn alert(s: &str);
 }
 
 #[wasm_bindgen]
-pub fn start(canvas_id: &str) -> Result<(), eframe::wasm_bindgen::JsValue> {
+pub fn start(
+    canvas_id: &str,
+    width: u32,
+    height: u32,
+) -> Result<(), eframe::wasm_bindgen::JsValue> {
     utils::set_panic_hook();
-    eframe::start_web(canvas_id, Box::new(app::App))
+    eframe::start_web(canvas_id, Box::new(app::App::new(width, height)))
 }
